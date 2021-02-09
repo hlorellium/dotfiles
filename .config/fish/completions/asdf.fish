@@ -1,0 +1,1 @@
+/home/hlorella/.asdf/completions/asdf.fish

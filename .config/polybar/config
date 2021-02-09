@@ -1,0 +1,335 @@
+[colors]
+background = #000000
+background-alt = #444
+foreground = #eeeeee
+foreground-alt = #555
+grey = #121212
+
+[bar/main]
+monitor = HDMI1
+monitor-fallback = eDP1
+width = 100%
+offset-x = 0%
+offset-y = 0%
+height = 35
+bottom = false
+radius = 0
+fixed-center = true
+background = ${colors.background}
+foreground = ${colors.foreground}
+line-size = 3
+line-color = #f00
+border-bottom-size = 3
+border-color = #eee
+
+font-0 = "mononoki Nerd Font:pixelsize=12;0"
+font-1 = "mononoki Nerd Font:size=13;1"
+font-2 = "mononoki Nerd Font:size=10;2"
+font-3 = "mononoki Nerd Font:size=14;3"
+
+modules-left = menu bspwm musicicon mpd
+modules-center =
+modules-right =  download upload ping  checkupdates filesystem memory cpu_clock temperature backlight pulseaudio battery date
+tray-position = none
+wm-restack = bspwm
+override-redirect = false
+cursor-click = default
+cursor-scroll = ns-resize
+
+
+
+## ==== BASEMODULE ====
+[module/basemodule]
+format-prefix-font = 2
+format = <label>
+label-font = 3
+label-padding = 2
+interval = 1
+label = "%output%"
+
+[module/baseicon]
+type = custom/text
+content-padding = 2
+content-foreground = #050505
+content-background = #B9979C
+
+## ==== MODULES ====
+
+[module/google]
+inherit = module/baseicon
+content = 
+click-left = xdg-open https://www.google.com &
+
+[module/github]
+inherit = module/baseicon
+content = 
+click-left = xdg-open https://www.github.com &
+
+[module/youtube]
+inherit = module/baseicon
+content = 
+click-left = xdg-open https://www.youtube.com &
+
+[module/reddit]
+inherit = module/baseicon
+content = 
+click-left = xdg-open https://www.reddit.com &
+
+[module/twitter]
+inherit = module/baseicon
+content = 
+click-left = xdg-open https://www.twitter.com &
+
+[module/poweroff]
+inherit = module/baseicon
+content-background = #050505
+content-foreground = #B9979C
+content = ⭘
+click-left = poweroff
+
+[module/menu]
+inherit = module/baseicon
+content-background = #050505
+content-foreground = #B9979C
+content = ""
+content-padding-right = 2
+click-left = rofi -show drun &
+
+[module/ping]
+inherit = module/basemodule
+type = custom/script
+exec = ~/.config/polybar/scripts/ping.sh
+format-prefix-foreground = #F18337
+format-prefix = 
+label = "%output:6:8%"
+label-font = 3
+
+[module/memory]
+inherit = module/basemodule
+type = internal/memory
+format-prefix-foreground = #82acee
+format-prefix = 
+label = "%percentage_used%%"
+
+[module/battery]
+inherit = module/basemodule
+type = custom/script
+exec = ~/.config/polybar/scripts/battery.py
+interval = 30
+label-font = 2
+label-foreground = #689d6a
+label-padding-left = 0
+label-padding-right = 1
+label = "%output%"
+
+[module/trash]
+inherit = module/basemodule
+type = custom/script
+exec = ~/.config/polybar/scripts/trash.sh
+click-left = ~/.config/polybar/scripts/trash.sh --clean &
+interval = 60
+format-prefix-foreground = #E0AF85
+format-prefix = 
+label = %output%
+
+[module/cpu_clock]
+inherit = module/basemodule
+type = custom/script
+exec = ~/.config/polybar/scripts/cpu_clock.py
+click-left = sudo ~/.scripts/disable_turbo
+format-prefix-foreground = #E0115F
+format-prefix = 龍
+label = "%output%"
+
+[module/bspwm]
+type = internal/bspwm
+pin-workspaces = false
+enable-click = true
+fuzzy-match = true
+enable-scroll = false
+label-focused-font = 2
+label-focused = ♥
+label-focused-foreground = #d90429
+label-focused-padding = 1
+label-occupied = 
+label-occupied-foreground = #eeeeee
+label-occupied-padding = 1
+label-urgent = 
+label-urgent-foreground = #eeeeee
+label-urgent-padding = 1
+label-empty = 
+label-empty-foreground = #eeeeee
+label-empty-padding = 1
+
+[module/wireguard]
+inherit = module/basemodule
+type = custom/script
+interval = 3
+exec = [[ ! -z "$(sudo wg show | head -n 1 | awk '{print $NF}')" ]] && echo "OK" || echo "Off"
+format-prefix-foreground = #80C990
+format-prefix = 嬨
+label = "%output%"
+
+[module/checkupdates]
+inherit = module/basemodule
+type = custom/script
+exec = ~/.config/polybar/scripts/checkupdates.sh
+interval = 120
+format-prefix-foreground = #168ECA
+# 
+format-prefix = 
+label = "%output%"
+
+[module/docker]
+inherit = module/basemodule
+type = custom/script
+exec = docker ps -q | wc -l
+format-prefix-foreground = #297FE6
+format-prefix = 
+label = "%output%"
+
+[module/backlight]
+inherit = module/basemodule
+type = internal/backlight
+card = intel_backlight
+enable-scroll = false
+format-prefix-foreground = #C8C874
+format-prefix = 盛
+label-font = 3
+label = %percentage%%
+
+[module/date]
+inherit = module/basemodule
+type = internal/date
+date = %a %b %d %r
+label = %date%
+label-padding-left = 1
+label-background = #050505
+
+[module/temperature]
+inherit = module/basemodule
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 100
+format-prefix-foreground = #F43341
+format-prefix = 
+label = "%temperature-c%"
+
+[module/mpd]
+type = internal/mpd
+label-song-font = 3
+label-song = %artist% - %title:0:30:...%
+
+[module/musicicon]
+inherit = module/baseicon
+content =  
+content-foreground = #B16286
+content-background = #050505
+
+[module/pulseaudio]
+inherit = module/basemodule
+type = internal/pulseaudio
+sink = <alsa_output.pci-0000_00_1f.3.analog-stereo>
+use-ui-max = true
+format-volume-prefix-foreground = #B16286
+format-volume-prefix = 
+format-volume-prefix-font = 2
+label-volume-padding = 2
+label-volume-font = 3
+label-volume = %percentage%%
+format-muted-prefix = 
+format-muted-prefix-foreground = #B16286
+format-muted-prefix-font = 2
+format-muted-prefix-padding = 2
+label-muted-padding = 2
+label-muted-font = 2
+label-muted = " "
+label-muted-foreground = #d9534f
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+mount-0 = /home
+format-mounted-prefix-foreground = #E6A3DC
+format-mounted-prefix-font = 2
+# 
+format-mounted-prefix = 﫭
+label-mounted-padding = 2
+label-mounted-font = 3
+label-mounted = "%used%"
+format-background = ${colors.background}
+
+;; Crypto
+[module/basecoin]
+type = custom/script
+interval = 60
+format-font = 1
+content-padding = 2
+label-font = 3
+label = "%output%"
+format-prefix-padding-left = 2
+format-prefix-padding = 1
+content-foreground = #050505
+content-background = #B9979C
+
+[module/bitcoin]
+inherit = module/basecoin
+exec = ~/.config/polybar/scripts/crypto.py BTC USD 24
+format-prefix-foreground = #F7931A
+format-prefix = 
+click-left = xdg-open "https://coinmarketcap.com/currencies/bitcoin/" &
+
+[module/ethereum]
+inherit = module/basecoin
+exec = ~/.config/polybar/scripts/crypto.py ETH USD 24
+format-prefix-foreground = #297FE6
+format-prefix = ﲹ
+click-left = xdg-open "https://coinmarketcap.com/currencies/ethereum/" &
+
+
+[module/wireless-network]
+type = internal/network
+interface = wlan0
+
+[module/download]
+type = internal/network
+interface = wlan0
+interval = 0.5
+accumulate-stats = true
+format-connected-prefix = 
+format-connected-prefix-foreground = #cdb4db
+format-connected-prefix-font = 2
+label-connected-padding = 2
+label-connected-font = 3
+label-connected = %downspeed%
+
+[module/upload]
+type = internal/network
+interface = wlan0
+interval = 0.5
+accumulate-stats = true
+format-connected-prefix = 
+format-connected-prefix-foreground = #f28482
+format-connected-prefix-font = 2
+label-connected-padding = 2
+label-connected-font = 3
+label-connected = %upspeed%
+
+[module/localip]
+type = internal/network
+interface = wlo1
+interval = 0.5
+accumulate-stats = true
+format-connected-prefix-padding = 2
+format-connected-prefix = 
+format-connected-prefix-foreground = #80C990
+format-connected-prefix-font = 2
+label-connected-font = 3
+label-connected = %local_ip%
+
+[settings]
+screenchange-reload = true
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
