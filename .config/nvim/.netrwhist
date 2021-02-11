@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =4
+let g:netrw_dirhist_4='/home/hlorella/Study/university/tes2'
+let g:netrw_dirhist_3='/home/hlorella/Study/university'
+let g:netrw_dirhist_2='/home/hlorella/Study'
+let g:netrw_dirhist_1='/home/hlorella/Study/university/tes2'
+let g:netrw_dirhist_0='/home/hlorella/Study/university'
+let g:netrw_dirhist_9='/home/hlorella/Study'
+let g:netrw_dirhist_8='/home/hlorella/Study/university/tes2'
+let g:netrw_dirhist_7='/home/hlorella/Study/university'
+let g:netrw_dirhist_6='/home/hlorella/Study/university/test'
+let g:netrw_dirhist_5='/home/hlorella/Study/university'
